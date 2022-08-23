@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+        <variable
+            name="clickListener"
+            type="com.udacity.asteroidradar.main.AsteroidListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/app_background"
+        android:onClick="@{() -> clickListener.onClick(asteroid)}">
+
+
+        <TextView
+            android:id="@+id/code_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@+id/date"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/isHazardous"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            asteroidCodename="@{asteroid}"
+            tools:text="Code Name"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/isHazardous"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/code_name"
+            asteroidApproachDate="@{asteroid}"
+            tools:text="Date"/>
+
+        <ImageView
+            android:id="@+id/isHazardous"
+            hazardousStatusIcon="@{asteroid}"
+            android:layout_width="51dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="64dp"
+            android:contentDescription="@string/icon_for_hazardous_status"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_status_normal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
