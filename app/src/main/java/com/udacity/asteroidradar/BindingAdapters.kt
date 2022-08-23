@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -63,3 +64,9 @@ fun TextView.setApproachDate(item: Asteroid?) {
         text = item.closeApproachDate
     }
 }
+
+@BindingAdapter("goneIfNotNull")
+fun goneIfNotNull(view: View, it: Any?) {
+    view.visibility = if (it != null) View.GONE else View.VISIBLE
+}
+

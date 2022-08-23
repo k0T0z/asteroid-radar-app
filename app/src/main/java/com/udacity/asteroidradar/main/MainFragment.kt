@@ -135,13 +135,11 @@ class MainFragment : Fragment() {
 
         binding.asteroidRecycler.adapter = adapter
 
-        adapter.submitList(test)
-
-//        viewModel.asteroidsList.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//
-//            }
-//        })
+        viewModel.asteroidsList.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
 
         viewModel.navigateToAsteroidDetails.observe(viewLifecycleOwner, Observer {asteroid ->
             asteroid?.let {
