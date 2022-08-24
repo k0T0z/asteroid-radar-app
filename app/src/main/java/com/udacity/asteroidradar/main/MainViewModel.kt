@@ -2,11 +2,13 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.Constants
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.network.NASAApiFilter
+import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
-
 
 class MainViewModel(
     application: Application
@@ -15,12 +17,19 @@ class MainViewModel(
     private val asteroidsRepository = AsteroidsRepository(database)
 
     init {
+        getPictureOfDay()
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroids()
+            asteroidsRepository.refreshAsteroids(NASAApiFilter.SHOW_DAY)
         }
     }
 
     val asteroidsList = asteroidsRepository.asteroids
+
+    private val _pictureOfDay = MutableLiveData<PictureOfDay>()
+
+    val pictureOfDay: LiveData<PictureOfDay>
+        get() = _pictureOfDay
+
 
     private val _navigateToAsteroidDetails = MutableLiveData<Long>()
     val navigateToAsteroidDetails
@@ -35,6 +44,23 @@ class MainViewModel(
         _navigateToAsteroidDetails.value = null
     }
 
+    private fun getPictureOfDay() {
+        viewModelScope.launch {
+            try {
+               val response = Network.nasa.getPictureOfDay(Constants.KEY)
+                _pictureOfDay.value = response
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    fun updateFilter(filter: NASAApiFilter) {
+        viewModelScope.launch {
+            asteroidsRepository.refreshAsteroids(filter)
+        }
+    }
+
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
@@ -44,5 +70,4 @@ class MainViewModel(
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
-
 }

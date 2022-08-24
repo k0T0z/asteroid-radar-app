@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,109 +13,8 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.detail.DetailFragment
 import com.udacity.asteroidradar.detail.DetailFragmentArgs
+import com.udacity.asteroidradar.network.NASAApiFilter
 
-val test = listOf<Asteroid>(
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-)
 
 class MainFragment : Fragment() {
 
@@ -122,15 +22,21 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
-        val adapter = AsteroidRecycler(AsteroidListener { asteroidId ->
-            viewModel.onAsteroidClicked(asteroidId)
+        val adapter = AsteroidRecycler(AsteroidListener { asteroid ->
+            this.findNavController().navigate(
+                MainFragmentDirections.actionShowDetail(
+                    asteroid
+                )
+            )
         })
 
         binding.asteroidRecycler.adapter = adapter
@@ -138,26 +44,6 @@ class MainFragment : Fragment() {
         viewModel.asteroidsList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-            }
-        })
-
-        viewModel.navigateToAsteroidDetails.observe(viewLifecycleOwner, Observer {asteroid ->
-            asteroid?.let {
-                this.findNavController().navigate(
-                    MainFragmentDirections.actionShowDetail(
-                        Asteroid(
-                            id = 0,
-                            codename = "codename",
-                            closeApproachDate = "closeApproachDate",
-                            absoluteMagnitude = 0.0,
-                            estimatedDiameter = 0.0,
-                            relativeVelocity = 0.0,
-                            distanceFromEarth = 0.0,
-                            isPotentiallyHazardous = false
-                        )
-                    )
-                )
-                viewModel.onAsteroidDetailsNavigated()
             }
         })
 
@@ -172,6 +58,12 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.updateFilter(
+            when (item.itemId) {
+                R.id.show_week_menu -> NASAApiFilter.SHOW_WEEK
+                else -> NASAApiFilter.SHOW_DAY
+            }
+        )
         return true
     }
 }

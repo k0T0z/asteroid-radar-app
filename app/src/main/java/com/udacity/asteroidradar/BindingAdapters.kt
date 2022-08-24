@@ -3,7 +3,9 @@ package com.udacity.asteroidradar
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Picasso
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
@@ -45,7 +47,7 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 fun ImageView.setHazardousStatusIcon(item: Asteroid) {
     setImageResource(
         when (item.isPotentiallyHazardous) {
-            true -> R.drawable.ic_status_normal
+            false -> R.drawable.ic_status_normal
             else -> R.drawable.ic_status_potentially_hazardous
         }
     )
@@ -68,5 +70,15 @@ fun TextView.setApproachDate(item: Asteroid?) {
 @BindingAdapter("goneIfNotNull")
 fun goneIfNotNull(view: View, it: Any?) {
     view.visibility = if (it != null) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("imageUrl")
+fun bindImage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        Picasso.get()
+            .load(imgUri)
+            .into(imgView)
+    }
 }
 
