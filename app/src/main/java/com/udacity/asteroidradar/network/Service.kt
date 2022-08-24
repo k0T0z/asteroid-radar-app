@@ -19,21 +19,21 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 
+private const val START_DATE = "2022-08-24"
+private const val END_DATE = "2022-08-24"
 
-
-private const val BASE_URL = "https://api.nasa.gov/neo/rest/v1/"
-private const val PICTURE_OF_DAY_BASE_URL = "https://api.nasa.gov/planetary/"
+private const val BASE_URL = "https://api.nasa.gov/"
 
 enum class NASAApiFilter(val value: String) { SHOW_WEEK("week"), SHOW_DAY("day") }
 
 interface NASAService {
-    @GET("feed")
+    @GET("neo/rest/v1/feed?api_key=${Constants.KEY}")
     suspend fun getResponse(
-        @Query("start_date") startDate: String, @Query("end_date") endDate: String, @Query("api_key") key: String
+        @Query("start_date") startDate: String, @Query("end_date") endDate: String
     ): String
 
-    @GET("apod")
-    fun getPictureOfDay(@Query("api_key") key: String): PictureOfDay
+    @GET("planetary/apod?api_key=${Constants.KEY}")
+    suspend fun getPictureOfDay(): PictureOfDay
 
 }
 
@@ -59,10 +59,14 @@ object Network {
 //        .client(getClient())
         .baseUrl(BASE_URL)
         .addConverterFactory(ScalarsConverterFactory.create())
-        .baseUrl(PICTURE_OF_DAY_BASE_URL)
+        .build()
+
+    private val retrofitPictureOfDay = Retrofit.Builder()
+//        .client(getClient())
+        .baseUrl(BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
-//        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
     val nasa: NASAService = retrofit.create(NASAService::class.java)
+    val nasaPictureOfDay: NASAService = retrofitPictureOfDay.create(NASAService::class.java)
 }

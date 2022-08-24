@@ -68,4 +68,55 @@ class MainFragment : Fragment() {
     }
 }
 
-
+val backUpList = listOf(
+    Asteroid(
+        id = 0,
+        codename = "codename",
+        closeApproachDate = "closeApproachDate",
+        absoluteMagnitude = 0.0,
+        estimatedDiameter = 0.0,
+        relativeVelocity = 0.0,
+        distanceFromEarth = 0.0,
+        isPotentiallyHazardous = false
+    ),
+    Asteroid(
+        id = 0,
+        codename = "codename",
+        closeApproachDate = "closeApproachDate",
+        absoluteMagnitude = 0.0,
+        estimatedDiameter = 0.0,
+        relativeVelocity = 0.0,
+        distanceFromEarth = 0.0,
+        isPotentiallyHazardous = false
+    ),
+    Asteroid(
+        id = 0,
+        codename = "codename",
+        closeApproachDate = "closeApproachDate",
+        absoluteMagnitude = 0.0,
+        estimatedDiameter = 0.0,
+        relativeVelocity = 0.0,
+        distanceFromEarth = 0.0,
+        isPotentiallyHazardous = false
+    ),
+    Asteroid(
+        id = 0,
+        codename = "codename",
+        closeApproachDate = "closeApproachDate",
+        absoluteMagnitude = 0.0,
+        estimatedDiameter = 0.0,
+        relativeVelocity = 0.0,
+        distanceFromEarth = 0.0,
+        isPotentiallyHazardous = false
+    ),
+    Asteroid(
+        id = 0,
+        codename = "codename",
+        closeApproachDate = "closeApproachDate",
+        absoluteMagnitude = 0.0,
+        estimatedDiameter = 0.0,
+        relativeVelocity = 0.0,
+        distanceFromEarth = 0.0,
+        isPotentiallyHazardous = false
+    ),
+)

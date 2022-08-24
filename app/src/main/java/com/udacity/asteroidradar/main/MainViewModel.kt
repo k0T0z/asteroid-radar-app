@@ -2,7 +2,6 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.network.NASAApiFilter
@@ -17,7 +16,7 @@ class MainViewModel(
     private val asteroidsRepository = AsteroidsRepository(database)
 
     init {
-        getPictureOfDay()
+        fetchPictureOfDay()
         viewModelScope.launch {
             asteroidsRepository.refreshAsteroids(NASAApiFilter.SHOW_DAY)
         }
@@ -30,28 +29,12 @@ class MainViewModel(
     val pictureOfDay: LiveData<PictureOfDay>
         get() = _pictureOfDay
 
-
-//    private val _navigateToAsteroidDetails = MutableLiveData<Long>()
-//    val navigateToAsteroidDetails
-//        get() = _navigateToAsteroidDetails
-//
-//
-//    fun onAsteroidClicked(id: Long){
-//        _navigateToAsteroidDetails.value = id
-//    }
-//
-//    fun onAsteroidDetailsNavigated() {
-//        _navigateToAsteroidDetails.value = null
-//    }
-
-    private fun getPictureOfDay() {
+    private fun fetchPictureOfDay() {
         viewModelScope.launch {
             try {
-               val response = Network.nasa.getPictureOfDay(Constants.KEY)
+               val response = Network.nasaPictureOfDay.getPictureOfDay()
                 _pictureOfDay.value = response
-            } catch (e: Exception) {
-
-            }
+            } catch (e: Exception) {}
         }
     }
 

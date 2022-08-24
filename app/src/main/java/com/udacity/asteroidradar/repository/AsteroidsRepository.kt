@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val START_DATE = "2022-08-24"
-private const val END_DATE = "2022-08-24"
+private const val END_DATE = "2022-08-30"
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
@@ -42,11 +42,11 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 //            if(filter == NASAApiFilter.SHOW_WEEK) {
 //                calendar.set(Calendar.DAY_OF_WEEK, 1)
 //                val startYear: Int = calendar.get(Calendar.YEAR)
-//                val startMonth: Int = calendar.get(Calendar.MONTH)+1
+//                val startMonth: Int = calendar.get(Calendar.MONTH) + 1
 //                val startDay: Int = calendar.get(Calendar.DAY_OF_MONTH)
 //                calendar.set(Calendar.DAY_OF_WEEK, 7)
 //                val endYear: Int = calendar.get(Calendar.YEAR)
-//                val endMonth: Int = calendar.get(Calendar.MONTH)+1
+//                val endMonth: Int = calendar.get(Calendar.MONTH) + 1
 //                val endDay: Int = calendar.get(Calendar.DAY_OF_MONTH)
 //                val startLocalDate: LocalDate = LocalDate.of(startYear,startMonth,startDay)
 //                val endLocalDate: LocalDate = LocalDate.of(endYear,endMonth,endDay)
@@ -59,7 +59,10 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 //                endDate = startDate
 //            }
             try {
-                val response = Network.nasa.getResponse(START_DATE, END_DATE, Constants.KEY)
+                val response = Network.nasa.getResponse(
+                    START_DATE,
+                    END_DATE,
+                )
                 val asteroidsList = parseAsteroidsJsonResult(JSONObject(response))
                 val array = asteroidsList.map {
                     DatabaseAsteroid (
@@ -75,9 +78,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
                 }.toTypedArray()
                 database.asteroidDao.insertAll(*array)
             }
-            catch (e: Exception) {
-
-            }
+            catch (e: Exception) {}
         }
     }
 }

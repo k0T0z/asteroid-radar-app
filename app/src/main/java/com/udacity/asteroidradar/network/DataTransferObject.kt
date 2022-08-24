@@ -12,6 +12,9 @@ import org.json.JSONObject
 //
 //@JsonClass(generateAdapter = true)
 //data class NetworkPictureOfDay(
+//    val date: String,
+//    val explanation: String,
+//    val hdurl: String,
 //    @Json(name = "media_type")
 //    val mediaType: String,
 //    val title: String,
