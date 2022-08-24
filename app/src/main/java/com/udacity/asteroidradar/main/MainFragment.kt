@@ -61,62 +61,10 @@ class MainFragment : Fragment() {
         viewModel.updateFilter(
             when (item.itemId) {
                 R.id.show_week_menu -> NASAApiFilter.SHOW_WEEK
-                else -> NASAApiFilter.SHOW_DAY
+                R.id.show_today_menu -> NASAApiFilter.SHOW_DAY
+                else -> NASAApiFilter.SHOW_ALL
             }
         )
         return true
     }
 }
-
-val backUpList = listOf(
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-    Asteroid(
-        id = 0,
-        codename = "codename",
-        closeApproachDate = "closeApproachDate",
-        absoluteMagnitude = 0.0,
-        estimatedDiameter = 0.0,
-        relativeVelocity = 0.0,
-        distanceFromEarth = 0.0,
-        isPotentiallyHazardous = false
-    ),
-)

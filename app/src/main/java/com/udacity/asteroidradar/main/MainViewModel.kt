@@ -39,6 +39,7 @@ class MainViewModel(
     }
 
     fun updateFilter(filter: NASAApiFilter) {
+        asteroidsRepository.getAsteroidsRepositoryFiltered(filter)
         viewModelScope.launch {
             asteroidsRepository.refreshAsteroids(filter)
         }

@@ -75,10 +75,15 @@ fun goneIfNotNull(view: View, it: Any?) {
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
-        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-        Picasso.get()
-            .load(imgUri)
-            .into(imgView)
+        try {
+            val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+            Picasso.get()
+                .load(imgUri)
+                .into(imgView)
+        }
+        catch (e: Exception) {
+            imgView.setImageResource(R.drawable.ic_help_circle)
+        }
     }
 }
 

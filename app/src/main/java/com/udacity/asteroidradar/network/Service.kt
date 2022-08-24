@@ -24,7 +24,7 @@ private const val END_DATE = "2022-08-24"
 
 private const val BASE_URL = "https://api.nasa.gov/"
 
-enum class NASAApiFilter(val value: String) { SHOW_WEEK("week"), SHOW_DAY("day") }
+enum class NASAApiFilter(val value: String) { SHOW_WEEK("week"), SHOW_DAY("day"), SHOW_ALL("all") }
 
 interface NASAService {
     @GET("neo/rest/v1/feed?api_key=${Constants.KEY}")

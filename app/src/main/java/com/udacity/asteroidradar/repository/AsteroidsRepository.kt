@@ -1,11 +1,10 @@
 package com.udacity.asteroidradar.repository
 
-import android.content.Context.MODE_PRIVATE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.MainActivity
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.DatabaseAsteroid
@@ -13,12 +12,9 @@ import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.network.NASAApiFilter
 import com.udacity.asteroidradar.network.Network
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val START_DATE = "2022-08-24"
@@ -28,10 +24,42 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
     private val calendar: Calendar = Calendar.getInstance()
 
-    val asteroids: LiveData<List<Asteroid>> =
+    var asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.getAsteroids()) {
             it.asDomainModel()
         }
+
+    fun getAsteroidsRepositoryFiltered(filter: NASAApiFilter) {
+        val startDate: String
+        val endDate: String
+        when (filter) {
+            NASAApiFilter.SHOW_WEEK -> {
+                val currentTime = calendar.time
+                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+                startDate = dateFormat.format(currentTime)
+                calendar.add(Calendar.DAY_OF_YEAR, 7)
+                val lastTime = calendar.time
+                endDate = dateFormat.format(lastTime)
+                asteroids = Transformations.map(database.asteroidDao.getFilteredAsteroids(startDate,endDate)) {
+                    it.asDomainModel()
+                }
+            }
+            NASAApiFilter.SHOW_DAY -> {
+                val currentTime = calendar.time
+                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+                startDate = dateFormat.format(currentTime)
+                endDate = startDate
+                asteroids = Transformations.map(database.asteroidDao.getFilteredAsteroids(startDate, endDate)) {
+                    it.asDomainModel()
+                }
+            }
+            else -> {
+                asteroids = Transformations.map(database.asteroidDao.getAsteroids()) {
+                    it.asDomainModel()
+                }
+            }
+        }
+    }
 
     suspend fun refreshAsteroids(
         filter: NASAApiFilter
@@ -40,19 +68,19 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
         withContext(Dispatchers.IO) {
             val startDate: String
             val endDate: String
-            if (filter == NASAApiFilter.SHOW_WEEK) {
+            if (filter == NASAApiFilter.SHOW_DAY) {
+                val currentTime = calendar.time
+                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+                startDate = dateFormat.format(currentTime)
+                endDate = startDate
+            }
+            else {
                 val currentTime = calendar.time
                 val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
                 startDate = dateFormat.format(currentTime)
                 calendar.add(Calendar.DAY_OF_YEAR, 7)
                 val lastTime = calendar.time
                 endDate = dateFormat.format(lastTime)
-            }
-            else {
-                val currentTime = calendar.time
-                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-                startDate = dateFormat.format(currentTime)
-                endDate = startDate
             }
             try {
                 val response = Network.nasa.getResponse(
