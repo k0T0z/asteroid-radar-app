@@ -31,18 +31,18 @@ class MainViewModel(
         get() = _pictureOfDay
 
 
-    private val _navigateToAsteroidDetails = MutableLiveData<Long>()
-    val navigateToAsteroidDetails
-        get() = _navigateToAsteroidDetails
-
-
-    fun onAsteroidClicked(id: Long){
-        _navigateToAsteroidDetails.value = id
-    }
-
-    fun onAsteroidDetailsNavigated() {
-        _navigateToAsteroidDetails.value = null
-    }
+//    private val _navigateToAsteroidDetails = MutableLiveData<Long>()
+//    val navigateToAsteroidDetails
+//        get() = _navigateToAsteroidDetails
+//
+//
+//    fun onAsteroidClicked(id: Long){
+//        _navigateToAsteroidDetails.value = id
+//    }
+//
+//    fun onAsteroidDetailsNavigated() {
+//        _navigateToAsteroidDetails.value = null
+//    }
 
     private fun getPictureOfDay() {
         viewModelScope.launch {
