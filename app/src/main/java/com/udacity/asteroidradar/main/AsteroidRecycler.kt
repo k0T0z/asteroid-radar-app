@@ -15,8 +15,6 @@ class AsteroidRecycler(private val clickListener: AsteroidListener): ListAdapter
         holder.bind(clickListener,getItem(position)!!)
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -29,6 +27,11 @@ class AsteroidRecycler(private val clickListener: AsteroidListener): ListAdapter
         ) {
             binding.asteroid = item
             binding.clickListener = clickListener
+            if (item.isPotentiallyHazardous) {
+                binding.codeName.contentDescription = "Hazardous asteroid"
+            } else {
+                binding.codeName.contentDescription = "Safe asteroid"
+            }
             binding.executePendingBindings()
         }
 

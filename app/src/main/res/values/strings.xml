@@ -21,8 +21,4 @@
     <string name="nasa_picture_of_day_content_description_format">NASA\'s picture of day: %s</string>
     <string name="icon_for_hazardous_status">icon for hazardous status</string>
     <string name="picture_of_the_day">picture of the day</string>
-    <string name="picture_of_the_day_fetched_from_nasa_api_this_might_be_a_video_but_showing_video_isn_t_supported_yet">Picture of the day fetched from NASA API, this might be a video but showing video isn\'t supported yet</string>
-    <string name="asteroid_details">asteroid details</string>
-    <string name="more_information_about_measurement_units">more information about measurement units</string>
-    <string name="image_represent_if_the_asteroid_is_hazardous_or_not">image represent if the asteroid is hazardous or not</string>
 </resources>

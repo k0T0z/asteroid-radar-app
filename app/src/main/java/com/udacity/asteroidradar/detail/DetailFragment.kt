@@ -20,6 +20,12 @@ class DetailFragment : Fragment() {
 
         binding.asteroid = asteroid
 
+        if (asteroid.isPotentiallyHazardous) {
+            binding.activityMainImageOfTheDay.contentDescription = "Hazardous asteroid"
+        } else {
+            binding.activityMainImageOfTheDay.contentDescription = "Safe asteroid"
+        }
+
         binding.helpButton.setOnClickListener {
             displayAstronomicalUnitExplanationDialog()
         }

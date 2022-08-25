@@ -31,7 +31,7 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/placeholder_picture_of_day"
                 imageUrl="@{viewModel.pictureOfDay.url}"
-                android:contentDescription="@string/picture_of_the_day_fetched_from_nasa_api_this_might_be_a_video_but_showing_video_isn_t_supported_yet" />
+                android:contentDescription="@{viewModel.pictureOfDay.title}" />
 
             <TextView
                 android:id="@+id/textView"
