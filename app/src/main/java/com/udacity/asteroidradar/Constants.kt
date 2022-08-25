@@ -7,5 +7,5 @@ object Constants {
 
     // TODO put your key here
 
-    const val KEY = ""
+    const val KEY = "bmk718QJL4hmeUnIxU81itxaN2rBReJYp9qZ9qdU"
 }

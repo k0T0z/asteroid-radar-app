@@ -24,64 +24,21 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
     private val calendar: Calendar = Calendar.getInstance()
 
-    var asteroids: LiveData<List<Asteroid>> =
+    val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.getAsteroids()) {
             it.asDomainModel()
         }
 
-    fun getAsteroidsRepositoryFiltered(filter: NASAApiFilter) {
-        val startDate: String
-        val endDate: String
-        when (filter) {
-            NASAApiFilter.SHOW_WEEK -> {
-                val currentTime = calendar.time
-                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-                startDate = dateFormat.format(currentTime)
-                calendar.add(Calendar.DAY_OF_YEAR, 7)
-                val lastTime = calendar.time
-                endDate = dateFormat.format(lastTime)
-                asteroids = Transformations.map(database.asteroidDao.getFilteredAsteroids(startDate,endDate)) {
-                    it.asDomainModel()
-                }
-            }
-            NASAApiFilter.SHOW_DAY -> {
-                val currentTime = calendar.time
-                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-                startDate = dateFormat.format(currentTime)
-                endDate = startDate
-                asteroids = Transformations.map(database.asteroidDao.getFilteredAsteroids(startDate, endDate)) {
-                    it.asDomainModel()
-                }
-            }
-            else -> {
-                asteroids = Transformations.map(database.asteroidDao.getAsteroids()) {
-                    it.asDomainModel()
-                }
-            }
-        }
-    }
-
-    suspend fun refreshAsteroids(
-        filter: NASAApiFilter
-    ) {
-
+    suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
             val startDate: String
             val endDate: String
-            if (filter == NASAApiFilter.SHOW_DAY) {
-                val currentTime = calendar.time
-                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-                startDate = dateFormat.format(currentTime)
-                endDate = startDate
-            }
-            else {
-                val currentTime = calendar.time
-                val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-                startDate = dateFormat.format(currentTime)
-                calendar.add(Calendar.DAY_OF_YEAR, 7)
-                val lastTime = calendar.time
-                endDate = dateFormat.format(lastTime)
-            }
+            val currentTime = calendar.time
+            val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+            startDate = dateFormat.format(currentTime)
+            calendar.add(Calendar.DAY_OF_YEAR, 7)
+            val lastTime = calendar.time
+            endDate = dateFormat.format(lastTime)
             try {
                 val response = Network.nasa.getResponse(
                     startDate,
