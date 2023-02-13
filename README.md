@@ -12,10 +12,8 @@ This kind of app is one of the most usual in the real world, what you will learn
 
 ### Screenshots
 
-![Screenshot 1](starter/screenshots/screen_1.png)
-![Screenshot 2](starter/screenshots/screen_2.png)
-![Screenshot 3](starter/screenshots/screen_3.png)
-![Screenshot 4](starter/screenshots/screen_4.png)
+![screen-shot-2020-06-08-at-2 21 53-pm](https://user-images.githubusercontent.com/74428638/218548254-c992cb8e-03fd-45c4-8d63-25d415ca1573.png)
+![screen-shot-2020-06-08-at-2 22 18-pm](https://user-images.githubusercontent.com/74428638/218548301-a500d5f7-fc91-45d4-b1eb-9b45d47eb520.png)
 
 ### Dependencies
 
